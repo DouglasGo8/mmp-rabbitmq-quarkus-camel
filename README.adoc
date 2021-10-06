@@ -1,0 +1,76 @@
+= RabbitMQ & Quarkus Camel for System Integration
+
+* Setup RabbitMQ over Docker
+
+[source,bash]
+----
+$ docker run -d --name rabbitmq --restart always \
+  --hostname docker-rabbitmq -p 5672:5672 -p 15672:15672 \
+  -v /media/data/.rabbitmq:/var/lib/rabbitmq/mnesia rabbitmq:management
+----
+
+== Links
+
+* https://code.quarkus.io/[Code in Quarkus]
+* https://camel.apache.org/components/3.11.x/rabbitmq-component.html[RabbitMQ Camel Component]
+* http://events17.linuxfoundation.org/sites/events/files/slides/CloudNativeCamelDesignPatterns.pdf[Cloud Native Apache Camel Design Patterns]
+
+== Basic Concepts
+
+. Queue is a buffer that stores a message, before any consumer take it
+. Exchange routing a message to correct queue
+. Routing key is a key that the exchange looks at to decide how to route the messate for a queue(s)
+. Biding is a link thas connects exchange to queue(s)
+. Distributed message to queue(s)
+. Copy message if required
+. Based on message routing key
+. Several type of exchanges
+. Binding: correlation between exchange - queues
+
+=== Kinds of Exchange
+
+==== Fanout
+.. Multiple queues of single message
+.. Broadcast to all queues bound to it
+.. Copy and send messages to all queues
+.. Fanout Sample Configuration
+.. Fanout can be compared with AWS SQS
+
+[source,json]
+----
+{
+  "exchange_name":  "exg.fanout.hr",
+  "queues": [
+    {
+      "queue_name": "rmq.accounting.hr"
+    },
+    {
+      "queue_name": "rmq.marketing.hr"
+    }
+  ]
+}
+----
+
+==== Direct
+.. Send Selective queues(s)
+.. Based on Routing key
+.. Message can be discarded
+
+[source,json]
+----
+{
+  "exchange_name":  "exg.direct.proc",
+  "routing_key": "must specify in camel using .toD one of following values [apple, android]",
+  "queues": [
+    {
+      "queue_name": "rmq.accounting.proc"
+    },
+    {
+      "queue_name": "rmq.marketing.proc"
+    }
+  ]
+}
+----
+
+.Direct Exchange Pattern using Dynamic Routing Key
+image:thumbs/Direct_Exchange_Pattern.png[]
