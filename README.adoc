@@ -12,6 +12,7 @@ $ docker run -d --name rabbitmq --restart always \
 == Links
 
 * https://code.quarkus.io/[Code in Quarkus]
+* https://camel.apache.org/components/3.11.x/rabbitmq-component.html#_uri_format[Apache Camel RabbitMQ]
 * https://camel.apache.org/components/3.11.x/rabbitmq-component.html[RabbitMQ Camel Component]
 * http://events17.linuxfoundation.org/sites/events/files/slides/CloudNativeCamelDesignPatterns.pdf[Cloud Native Apache Camel Design Patterns]
 
