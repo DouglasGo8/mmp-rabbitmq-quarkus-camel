@@ -17,15 +17,15 @@ public class SalesProducerRoute extends RouteBuilder {
 
 
     @Override
-    public void configure() throws Exception {
+    public void configure() {
 
 
         from("timer://mySalesProducer?period=5s&fixedRate=true")
                 .to("bean:myRandomStock")
                 .marshal().json(JsonLibrary.Jackson)
-                .setHeader("kind", jsonpath("$.kind"))
-                .log("Send Message with Routing Key ${header.kind}")
-                .toD("{{my.rabbitmq.sales.producer}}")
+                .setHeader("CamelRabbitmqRoutingKey", jsonpath("$.kind"))
+                .to("{{my.rabbitmq.sales.producer}}")
+                .log("Message produced")
                 .end();
 
     }

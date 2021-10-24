@@ -21,7 +21,7 @@ $ docker run -d --name rabbitmq --restart always \
 . Queue is a buffer that stores a message, before any consumer take it
 . Exchange routing a message to correct queue
 . Routing key is a key that the exchange looks at to decide how to route the message for a queue(s)
-. Biding is a link thas connects exchange to queue(s)
+. Binding is a link that connects exchange to queue(s)
 . Distributed message to queue(s)
 . Copy message if required
 . Based on message routing key
@@ -53,6 +53,7 @@ $ docker run -d --name rabbitmq --restart always \
 ----
 
 ==== Direct
+
 .. Send Selective queues(s)
 .. Based on Routing key
 .. Message can be discarded
@@ -75,3 +76,12 @@ $ docker run -d --name rabbitmq --restart always \
 
 .Direct Exchange Pattern using Dynamic Routing Key
 image:thumbs/Direct_Exchange_Pattern.png[]
+
+* Apache Camel Routing Key Header to Producer Endpoint Raw sample
+
+[source, java]
+----
+.marshal().json(JsonLibrary.Jackson)
+.setHeader("CamelRabbitmqRoutingKey", jsonpath("$.kind"))
+.to("{{my.rabbitmq.sales.producer}}")
+----
