@@ -19,7 +19,7 @@ public class MyQuotes {
 
   @Handler
   public String myAccountingHrQuotes() {
-    var quotes = new String[]{
+    final var quotes = new String[]{
             "Stay Hungry. Stay Foolish; Steve Jobs",
             "Good Artists Copy, Great Artists Steal; Pablo Picasso",
             "Argue with idiots, and you become an idiot; Paul Graham",

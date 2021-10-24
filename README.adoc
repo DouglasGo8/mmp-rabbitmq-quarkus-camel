@@ -6,7 +6,7 @@
 ----
 $ docker run -d --name rabbitmq --restart always \
   --hostname docker-rabbitmq -p 5672:5672 -p 15672:15672 \
-  -v /media/data/.rabbitmq:/var/lib/rabbitmq/mnesia rabbitmq:management
+  -v /mnt/data/.rabbitmq:/var/lib/rabbitmq/mnesia rabbitmq:management
 ----
 
 == Links
@@ -20,7 +20,7 @@ $ docker run -d --name rabbitmq --restart always \
 
 . Queue is a buffer that stores a message, before any consumer take it
 . Exchange routing a message to correct queue
-. Routing key is a key that the exchange looks at to decide how to route the messate for a queue(s)
+. Routing key is a key that the exchange looks at to decide how to route the message for a queue(s)
 . Biding is a link thas connects exchange to queue(s)
 . Distributed message to queue(s)
 . Copy message if required
@@ -60,14 +60,14 @@ $ docker run -d --name rabbitmq --restart always \
 [source,json]
 ----
 {
-  "exchange_name":  "exg.direct.proc",
-  "routing_key": "must specify in camel using .toD one of following values [apple, android]",
+  "exchange_name":  "exg.direct.sales",
+  "routing_key": "[apple, android]",
   "queues": [
     {
-      "queue_name": "rmq.accounting.proc"
+      "queue_name": "rmq.sales.adr"
     },
     {
-      "queue_name": "rmq.marketing.proc"
+      "queue_name": "rmq.sales.apl"
     }
   ]
 }
