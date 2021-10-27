@@ -85,3 +85,34 @@ image:thumbs/Direct_Exchange_Pattern.png[]
 .setHeader("CamelRabbitmqRoutingKey", jsonpath("$.kind"))
 .to("{{my.rabbitmq.sales.producer}}")
 ----
+
+==== Topic
+
+.. Send Selective queues(s) with filtered expressions
+.. Based on Routing key
+.. Message can be discarded
+
+[source,json]
+----
+{
+  "exchange_name":  "exg.topic.images",
+  "queues": [
+    {
+      "queue_name": "rmq.pic.image",
+      "routing_key": ["#.jpg", "*.*.png"]
+    },
+    {
+      "queue_name": "rmq.pic.vector",
+      "routing_key": ["*.*.svg"]
+    },
+    {
+      "queue_name": "rmq.pic.filter",
+      "routing_key": ["mobile.#"]
+    },
+    {
+      "queue_name": "rmq.pic.log",
+      "routing_key": ["*.large.svg"]
+    }
+  ]
+}
+----
