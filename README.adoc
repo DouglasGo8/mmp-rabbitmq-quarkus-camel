@@ -151,7 +151,7 @@ my.producer.prop=rabbitmq:x.pic?addresses=&queue=q.pic&\
   deadLetterQueue=q.pic.dlq
 ----
 
-.Consumer Side (Basic only Props or Yaml config is necessary)
+.Consumer Side (Basically only Props or Yaml config is necessary)
 [source, properties]
 ----
 my.consumer.prop=rabbitmq:x.pic?addresses=&queue=q.pic&\
@@ -161,3 +161,9 @@ my.consumer.prop=rabbitmq:x.pic?addresses=&queue=q.pic&\
   concurrentConsumers=3&threadPoolSize=5&\
   reQueue=true&autoAck=false
 ----
+
+
+== Prefetch Config
+
+. Fast Consumers, preferred High prefetch value (e.g. 250)
+. Slow Consumers, preferred slow value (e.g. 1)
