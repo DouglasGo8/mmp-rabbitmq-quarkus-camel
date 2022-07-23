@@ -1,4 +1,4 @@
-package com.udemy.master.rabbitmq.quarkus.camel.json.mediation.consumer;
+package com.udemy.master.rabbitmq.quarkus.camel.hnd.errors.consumer;
 
 import lombok.NoArgsConstructor;
 import org.apache.camel.LoggingLevel;
@@ -13,11 +13,10 @@ public class EmployeeConsumerRoute extends RouteBuilder {
   public void configure() {
     from("{{my.rabbitmq.fanout.queue.consumer}}")
             //.delay(ThreadLocalRandom.current().nextLong(3000))
-            .choice()
-              .when(jsonpath("$.[?(@.employeeSalary > 10000)]"))
-                .throwException(new IllegalArgumentException("Salary cannot be upper than 10K"))
-              .end()
-            .log(LoggingLevel.INFO, "Receiving message - ${body}-${threadName} - at ${date:now}")
+            .choice().when(jsonpath("$.[?(@.employeeSalary > 10000)]"))
+              .throwException(new IllegalArgumentException("Salary cannot be over than 10K"))
+            .otherwise()
+              .log(LoggingLevel.INFO, "Receiving message - ${body}-${threadName} - at ${date:now}")
             .end();
   }
 }

@@ -2,11 +2,12 @@
 
 * Setup RabbitMQ over Docker
 
+.Only Linux Usage
 [source,bash]
 ----
 docker run -d --name rabbitmq --restart always \
   --hostname docker-rabbitmq -p 5672:5672 -p 15672:15672 \
-  -v /mnt/data/.rabbitmq:/var/lib/rabbitmq/mnesia rabbitmq:management
+  -v /Users/dougdb/.docker_volumes/rabbitmq:/var/lib/rabbitmq/mnesia rabbitmq:management
 ----
 
 == Links
@@ -115,4 +116,48 @@ image:thumbs/Direct_Exchange_Pattern.png[]
     }
   ]
 }
+----
+
+== Dead Letter Configuration Camel RabbitMQ Spring Equivalent
+
+.Spring Boot DLQ RabbitMQ Sample (acknowledge-mode: manual in properties Or yaml)
+[source,java]
+----
+@RabbitListener(queues="q.pic")
+public void listen(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
+  if (myBodyIsInvalid) {
+    channel.basicReject(tag, false);
+    return;
+  }
+
+  channel.basicAck(tag, false);
+}
+----
+
+.Apache Camel DLQ RabbitMQ Sample
+
+.Producer Side
+[source,java]
+----
+from("direct:foo")
+  .setHeader("CamelRabbitmqRequeue", constant(false))
+  .marshal().json(JsonLibrary.Jackson)
+  .to("{{my.rabbitmq.fanout.queue.producer}}");
+----
+[source, properties]
+----
+my.producer.prop=rabbitmq:x.pic?addresses=&queue=q.pic&\
+  autoDelete=false&exchangeType=fanout&deadLetterExchange=x.pic.dlq&deadLetterExchangeType=fanout&\
+  deadLetterQueue=q.pic.dlq
+----
+
+.Consumer Side (Basic only Props or Yaml config is necessary)
+[source, properties]
+----
+my.consumer.prop=rabbitmq:x.pic?addresses=&queue=q.pic&\
+  autoDelete=false&exchangeType=fanout&\
+  deadLetterExchange=x.pic.dlq&deadLetterExchangeType=fanout&\
+  deadLetterQueue=q.pic.dlq&\
+  concurrentConsumers=3&threadPoolSize=5&\
+  reQueue=true&autoAck=false
 ----

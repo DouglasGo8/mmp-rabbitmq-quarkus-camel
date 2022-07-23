@@ -8,11 +8,11 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>com.udemy.master.rabbitmq.quarkus.camel.handle.errors</groupId>
-  <artifactId>handle-errors</artifactId>
+  <groupId>com.udemy.master.rabbitmq.quarkus.camel.retry.mech</groupId>
+  <artifactId>retry-mechanism</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>RabbitMQ :: Quarkus and Apache Camel :: System Integrations :: Handle DLQ</name>
+  <name>RabbitMQ :: Quarkus and Apache Camel :: System Integrations :: Retry Mechanisms</name>
 
 
 </project>
